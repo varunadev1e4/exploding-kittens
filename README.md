@@ -1,6 +1,6 @@
-# Card Night: Exploding Kittens, Uno, Cat in the Box and Flip 7
+# Card Night: Exploding Kittens, Uno, Cat in the Box, Flip 7 and Coup
 
-Small realtime web versions of **Exploding Kittens** (2–10 players), **Uno** (2–10) **Cat in the Box** (2–5) and **Flip 7** (2–18), using the published rulebooks.
+Small realtime web versions of **Exploding Kittens** (2–10 players), **Uno** (2–10) **Cat in the Box** (2–5), **Flip 7** (2–18) and **Coup** (2–6), using the published rulebooks.
 React + Vite front end, Supabase (Postgres + Realtime) for shared game state, Vercel for hosting.
 
 ## 1. Supabase
@@ -70,6 +70,17 @@ copy goes to another active player (or is discarded). Score = numbers, ×2 on nu
 reshuffled between rounds (only when it runs out); the dealer passes left. First to 200 at the end of a round wins; ties above 200 play on.
 Interpretations: a Second Chance you draw while holding none is kept automatically; the rulebook says 3+ players but 2 is allowed here;
 the "card counter" shows the unseen number cards (public information, since all other cards are face up).
+
+## Coup
+Base game, 2–6 players, 15 cards (3 each of Duke, Assassin, Captain, Ambassador, Contessa). Everyone starts with 2 coins and 2 hidden
+influence; lose both and you are out, last player standing wins. Actions: Income (+1), Foreign Aid (+2, any Duke can block), Coup (pay 7,
+unblockable, mandatory at 10+ coins), Tax (Duke, +3), Assassinate (Assassin, pay 3; the Contessa blocks), Steal (Captain, take 2; Captain or
+Ambassador blocks) and Exchange (Ambassador, draw 2 and keep as many cards as you have influence). Claims can be bluffs: anyone can challenge
+a claim (action or block); a truthful claimer swaps the shown card for a new one and the challenger loses an influence, a bluffer loses one.
+Flow: challenge window, then block window (only the target for Assassinate/Steal, anyone for Foreign Aid), then the block can be challenged.
+Coins paid for a challenged Assassination are refunded if the bluff is caught, but lost if it is blocked. In a 2-player game the starting
+player begins with 1 coin (official rule). Like the other games, hidden cards live in the shared game state, so this is built for friends, not
+for cheaters. A player leaving mid-action cancels that action.
 
 ## Adding another game
 Write an engine (`newLobby`, `reduce`, `blockerId`) and a Board component, register them in `src/games.js` and the `BOARDS` map in

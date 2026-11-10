@@ -68,7 +68,7 @@ export default function App() {
     <main className="home">
       <div className="logo" aria-hidden>💣</div>
       <h1>Card Night</h1>
-      <p className="tagline">Exploding Kittens, Uno, Cat in the Box and Flip 7 with friends anywhere, no one has to sit at the same table.</p>
+      <p className="tagline">Exploding Kittens, Uno, Cat in the Box, Flip 7 and Coup with friends anywhere, no one has to sit at the same table.</p>
 
       <section className="card-panel">
         <label htmlFor="name">Your name</label>
@@ -83,6 +83,7 @@ export default function App() {
             <button className="btn primary" disabled={needName || busy} onClick={() => create('uno')}>🎴 New Uno game</button>
             <button className="btn primary" disabled={needName || busy} onClick={() => create('cat')}>📦 New Cat in the Box game</button>
             <button className="btn primary" disabled={needName || busy} onClick={() => create('flip7')}>🔢 New Flip 7 game</button>
+            <button className="btn primary" disabled={needName || busy} onClick={() => create('coup')}>👑 New Coup game</button>
             <form onSubmit={join} className="row">
               <input aria-label="Game code" value={joinCode} maxLength={4} placeholder="Game code"
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())} />

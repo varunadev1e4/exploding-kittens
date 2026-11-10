@@ -176,3 +176,35 @@ select { width: auto; }
 .f7c .ic { font-size: 1.1rem; }
 .counter { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .9rem; margin-top: 4px; }
 .counter b { color: var(--gold); }
+
+/* ---------- Coup ---------- */
+.cp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.cp-seat { background: var(--felt-2); border: 2px solid transparent; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; }
+.cp-seat.turn { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255, 210, 63, .15); }
+.cp-seat.dead { opacity: .5; }
+.cp-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+.cp-head .coins { font-family: var(--display); font-size: 1.1rem; color: var(--gold); white-space: nowrap; }
+.cp-sub { color: var(--muted); font-size: .85rem; }
+.cp-cards { display: flex; flex-wrap: wrap; gap: 6px; min-height: 52px; align-items: center; }
+.cp-cards.big { justify-content: center; gap: 10px; }
+.cpc { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 64px; height: 88px; border-radius: 10px;
+  border: 2px solid #fff; background: var(--c, #2a2a3a); color: #fff; font-family: var(--body); font-weight: 800; box-shadow: 0 2px 0 rgba(0,0,0,.35); flex: none; padding: 0; }
+.cpc .ic { font-size: 1.6rem; line-height: 1; }
+.cpc .nm { font-size: .62rem; text-align: center; max-width: 100%; overflow: hidden; letter-spacing: -.01em; }
+.cpc { width: 76px; overflow: hidden; }
+.cpc.small { width: 44px; height: 60px; border-radius: 8px; }
+.cpc.small .ic { font-size: 1.3rem; }
+.cpc.small .nm { display: none; } /* icon + colour identify the character; the name is in the tooltip */
+.cpc.back { background: repeating-linear-gradient(45deg, #23233a, #23233a 6px, #2d2d4a 6px, #2d2d4a 12px); }
+.cpc.dim { opacity: .45; filter: grayscale(.5); border-style: dashed; }
+button.cpc { cursor: pointer; transition: transform .12s; }
+button.cpc:hover { transform: translateY(-6px); }
+.cpc.sel { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold), 0 6px 0 rgba(0,0,0,.35); }
+.cpc.ch-duke { --c: #6a3fb5; }
+.cpc.ch-assassin { --c: #2a2a2e; }
+.cpc.ch-captain { --c: #1f5fa8; }
+.cpc.ch-ambassador { --c: #2e8b57; }
+.cpc.ch-contessa { --c: #b02a3c; }
+.claim { font-weight: 800; }
+.cp-target { display: flex; flex-direction: column; gap: 4px; max-width: 320px; margin: 0 auto; width: 100%; text-align: left; }
+.liar-banner { text-align: center; font-weight: 800; background: rgba(229, 56, 59, .18); border: 1px solid #e5383b; border-radius: 12px; padding: 8px 12px; margin: 0 auto; max-width: 640px; }

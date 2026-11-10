@@ -5,6 +5,7 @@ import * as ek from './engine.js';
 import * as uno from './uno/engine.js';
 import * as cat from './cat/engine.js';
 import * as flip7 from './flip7/engine.js';
+import * as coup from './coup/engine.js';
 
 export const GAMES = {
   ek: {
@@ -32,6 +33,12 @@ export const GAMES = {
     id: 'flip7', title: 'Flip 7', emoji: '🔢', max: flip7.MAX_PLAYERS,
     newLobby: flip7.newLobby, reduce: flip7.reduce, blockerId: flip7.blockerId,
     lobbyNote: (n) => `${n}/${flip7.MAX_PLAYERS} players · first to ${flip7.TARGET} points (the rulebook says 3+ players, 2 also works)`,
+    options: [],
+  },
+  coup: {
+    id: 'coup', title: 'Coup', emoji: '👑', max: coup.MAX_PLAYERS,
+    newLobby: coup.newLobby, reduce: coup.reduce, blockerId: coup.blockerId,
+    lobbyNote: (n) => `${n}/${coup.MAX_PLAYERS} players · bluff, challenge and be the last player with influence`,
     options: [],
   },
 };
