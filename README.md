@@ -1,6 +1,6 @@
-# Card Night: Exploding Kittens, Uno, Cat in the Box, Flip 7 and Coup
+# Card Night: Exploding Kittens, Uno, Cat in the Box, Flip 7, Coup and Duel for Cardia
 
-Small realtime web versions of **Exploding Kittens** (2–10 players), **Uno** (2–10) **Cat in the Box** (2–5), **Flip 7** (2–18) and **Coup** (2–6), using the published rulebooks.
+Small realtime web versions of **Exploding Kittens** (2–10 players), **Uno** (2–10) **Cat in the Box** (2–5), **Flip 7** (2–18), **Coup** (2–6) and **Duel for Cardia** (exactly 2), using the published rulebooks.
 React + Vite front end, Supabase (Postgres + Realtime) for shared game state, Vercel for hosting.
 
 ## 1. Supabase
@@ -81,6 +81,13 @@ Flow: challenge window, then block window (only the target for Assassinate/Steal
 Coins paid for a challenged Assassination are refunded if the bluff is caught, but lost if it is blocked. In a 2-player game the starting
 player begins with 1 coin (official rule). Like the other games, hidden cards live in the shared game state, so this is built for friends, not
 for cheaters. A player leaving mid-action cancels that action.
+
+## Duel for Cardia
+Exactly 2 players, Deck I only (16 cards each, no locations). Each round both players secretly pick a card; the higher influence wins a signet and
+the lower card's owner activates its ability (some ask for a choice). Modifiers and ongoing tokens can change past encounters, so signets are
+always recounted from the table. First to 5 signets wins; a Djinn that wins by ability ends the game at once. Fortune Teller makes the opponent
+play face up first. The wording of Void Mage, Surgeon, Palace Guard and Treasurer is a best guess (marked with a warning in the card info).
+If a player leaves, the other wins.
 
 ## Adding another game
 Write an engine (`newLobby`, `reduce`, `blockerId`) and a Board component, register them in `src/games.js` and the `BOARDS` map in

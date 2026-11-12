@@ -220,6 +220,16 @@ function removeFromLobby(s, id) {
   say(s, `${p.name} left.`);
 }
 
+// Reset the room to a fresh lobby: same host and players (anyone who already left the game is dropped).
+function backToLobby(s) {
+  const keep = s.players.filter((p) => !p.left);
+  const host = keep.find((p) => p.id === s.hostId) || keep[0];
+  const fresh = newLobby(host.id, host.name);
+  fresh.players = keep.map((p) => freshPlayer(p.id, p.name));
+  fresh.log = ['Back in the lobby.'];
+  return fresh;
+}
+
 function removePlayer(s, t) {
   const wasTurn = s.players[s.turnIdx] && s.players[s.turnIdx].id === t.id;
   t.left = true; t.alive = false; t.coins = 0;
@@ -271,8 +281,15 @@ export function reduce(state, a) {
       const p = byId(s, a.player);
       if (!p) return null;
       if (s.phase === 'lobby') { removeFromLobby(s, p.id); return s; }
+      // the host leaving sends everyone back to the lobby (the next player becomes host)
+      if (p.id === s.hostId) { const next = backToLobby(s); removeFromLobby(next, p.id); return next; }
       if (s.phase === 'ended' || p.left) return null;
       removePlayer(s, p); return s;
+    }
+    case 'toLobby': { // host ends the game and brings everyone back to the lobby
+      if (a.player !== s.hostId) throw new Error('Only the host can do that.');
+      if (s.phase === 'lobby') return null;
+      return backToLobby(s);
     }
     case 'kick': {
       const caller = byId(s, a.player), tgt = byId(s, a.target);
