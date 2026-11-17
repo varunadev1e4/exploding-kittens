@@ -16,7 +16,7 @@ for (let g=0; g<500; g++){
   }
   let steps=0;
   while(s.phase!=='ended' && steps++<5000){
-    if(Math.random()<0.02){ const v=s.players.filter(p=>p.alive&&p.id!=='p0'); if(v.length){ const x=v[Math.floor(Math.random()*v.length)]; let r2=null; try{ r2=reduce(s,{type:Math.random()<0.5?'leave':'kick',player:Math.random()<0.5?x.id:'p0',target:x.id,now:Date.now()}); }catch(e){ if(!/Only the host/.test(e.message)) throw e; } if(r2) s=r2; if(s.phase==='ended') break; } }
+    if(Math.random()<0.02){ const v=s.players.filter(p=>p.alive&&p.id!=='p0'); if(v.length){ const x=v[Math.floor(Math.random()*v.length)]; let r2=null; try{ r2=reduce(s,{type:Math.random()<0.5?'leave':'kick',player:Math.random()<0.5?x.id:'p0',target:x.id,now:Date.now()}); }catch(e){ if(!/Only the host/.test(e.message)) throw e; } if(r2) s=r2; if(s.phase==='ended'||s.phase==='lobby') break; } }
     const cur=s.players[s.turnIdx]; const now=Date.now();
     const act = (a)=>{ const r=reduce(s,{...a,now}); if(r) s=r; return r; };
     if(s.pending){
@@ -34,8 +34,8 @@ for (let g=0; g<500; g++){
     else if(r<0.5&&others.length){ const c=Object.keys(CARDS).find(t=>t!=='exploding'&&cur.hand.filter(x=>x===t).length>=2); if(c) act({type:'combo',player:cur.id,card:c,count:2,target:others[0].id}); else act({type:'draw',player:cur.id}); }
     else act({type:'draw',player:cur.id});
   }
-  if(s.phase!=='ended') throw new Error('stuck game '+g);
-  if(s.players.filter(p=>p.alive).length!==1) throw new Error('alive count');
+  if(s.phase!=='ended'&&s.phase!=='lobby') throw new Error('stuck game '+g);
+  if(s.phase==='ended'&&s.players.filter(p=>p.alive).length!==1) throw new Error('alive count');
   games++; maxSteps=Math.max(maxSteps,steps);
 }
 console.log('ok',games,'games; max steps',maxSteps);

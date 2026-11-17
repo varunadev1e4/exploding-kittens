@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from './supabase.js';
-import { gameOf } from './games.js';
+import { reduceRoom, switchGame } from './games.js';
 
 // Keeps one game row in sync (realtime + polling fallback) and applies actions with
 // optimistic concurrency: the update only succeeds if nobody else changed the row first;
@@ -53,7 +53,11 @@ export function useGame(code, playerId) {
       const cur = rowRef.current;
       if (!cur) return false;
       let next;
-      try { next = gameOf(cur.state).reduce(cur.state, { ...action, now: Date.now() }); }
+      try {
+        next = action.type === 'setGame'
+          ? switchGame(cur.state, action.game, action.player)
+          : reduceRoom(cur.state, { ...action, now: Date.now() });
+      }
       catch (e) { setError(e.message); return false; }
       if (!next) return false;
       const { data, error: err } = await supabase

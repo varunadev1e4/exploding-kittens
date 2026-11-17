@@ -177,6 +177,16 @@ function removeFromLobby(s, id) {
   say(s, `${p.name} left.`);
 }
 
+// Reset the room to a fresh lobby: same host and players (anyone who already left the game is dropped).
+function backToLobby(s) {
+  const keep = s.players.filter((p) => !p.left);
+  const host = keep.find((p) => p.id === s.hostId) || keep[0];
+  const fresh = newLobby(host.id, host.name);
+  fresh.players = keep.map((p) => ({ id: p.id, name: p.name, hand: [], alive: true }));
+  fresh.log = ['Back in the lobby.'];
+  return fresh;
+}
+
 // Someone left mid-game. The deck/board are sized for the player count, so a round in progress is voided
 // and replayed with the remaining players (scores are kept).
 function removePlayer(s, t) {
@@ -222,8 +232,15 @@ export function reduce(state, a) {
       const p = byId(s, a.player);
       if (!p) return null;
       if (s.phase === 'lobby') { removeFromLobby(s, p.id); return s; }
+      // the host leaving sends everyone back to the lobby (the next player becomes host)
+      if (p.id === s.hostId) { const next = backToLobby(s); removeFromLobby(next, p.id); return next; }
       if (s.phase === 'ended' || p.left) return null;
       removePlayer(s, p); return s;
+    }
+    case 'toLobby': { // host ends the game and brings everyone back to the lobby
+      if (a.player !== s.hostId) throw new Error('Only the host can do that.');
+      if (s.phase === 'lobby') return null;
+      return backToLobby(s);
     }
     case 'kick': {
       const caller = byId(s, a.player), tgt = byId(s, a.target);

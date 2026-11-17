@@ -1,4 +1,4 @@
-{
+ {
   "name": "exploding-kittens-online",
   "private": true,
   "version": "1.0.0",
@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node scripts/simulate.mjs && node scripts/uno-test.mjs && node scripts/cat-test.mjs && node scripts/flip7-test.mjs && node scripts/coup-test.mjs"
+    "test": "node scripts/simulate.mjs && node scripts/uno-test.mjs && node scripts/cat-test.mjs && node scripts/flip7-test.mjs && node scripts/coup-test.mjs && node scripts/cardia-test.mjs && node scripts/lobby-test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",

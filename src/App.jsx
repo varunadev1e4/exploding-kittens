@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { configured, supabase } from './supabase.js';
-import { GAMES } from './games.js';
+import { GAMES, DEFAULT_GAME } from './games.js';
 import Room from './Room.jsx';
 
 const ME_KEY = 'ek_me';
@@ -42,11 +42,12 @@ export default function App() {
 
   const needName = !me.name.trim();
 
-  async function create(gameId) {
+  // A room starts as a lobby; the host picks which game to play inside it.
+  async function create() {
     setBusy(true); setErr('');
     for (let i = 0; i < 5; i++) {
       const c = Array.from({ length: 4 }, () => CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]).join('');
-      const { error } = await supabase.from('games').insert({ code: c, state: GAMES[gameId].newLobby(me.id, me.name.trim()), version: 0 });
+      const { error } = await supabase.from('games').insert({ code: c, state: GAMES[DEFAULT_GAME].newLobby(me.id, me.name.trim()), version: 0 });
       if (!error) { location.hash = c; setBusy(false); return; }
       if (error.code !== '23505') { setErr(error.message); setBusy(false); return; } // 23505 = code taken, retry
     }
@@ -68,7 +69,7 @@ export default function App() {
     <main className="home">
       <div className="logo" aria-hidden>💣</div>
       <h1>Card Night</h1>
-      <p className="tagline">Exploding Kittens, Uno, Cat in the Box, Flip 7 and Coup with friends anywhere, no one has to sit at the same table.</p>
+      <p className="tagline">Exploding Kittens, Uno, Cat in the Box, Flip 7, Coup and Duel for Cardia with friends anywhere, no one has to sit at the same table.</p>
 
       <section className="card-panel">
         <label htmlFor="name">Your name</label>
@@ -79,11 +80,7 @@ export default function App() {
           <p className="hint">You're joining game <strong>{code}</strong>. Enter your name to continue.</p>
         ) : (
           <>
-            <button className="btn primary" disabled={needName || busy} onClick={() => create('ek')}>💣 New Exploding Kittens game</button>
-            <button className="btn primary" disabled={needName || busy} onClick={() => create('uno')}>🎴 New Uno game</button>
-            <button className="btn primary" disabled={needName || busy} onClick={() => create('cat')}>📦 New Cat in the Box game</button>
-            <button className="btn primary" disabled={needName || busy} onClick={() => create('flip7')}>🔢 New Flip 7 game</button>
-            <button className="btn primary" disabled={needName || busy} onClick={() => create('coup')}>👑 New Coup game</button>
+            <button className="btn primary" disabled={needName || busy} onClick={create}>🎲 Create a room</button>
             <form onSubmit={join} className="row">
               <input aria-label="Game code" value={joinCode} maxLength={4} placeholder="Game code"
                 onChange={(e) => setJoinCode(e.target.value.toUpperCase())} />
